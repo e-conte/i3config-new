@@ -1,3 +1,13 @@
+1st - install xorg-randr
+2nd set a resolution cvt 1680 1050 60
+
+his gives you:
+
+# 1680x1050 59.95 Hz (CVT 1.76MA) hsync: 65.29 kHz; pclk: 146.25 MHz
+Modeline "1680x1050_60.00"  146.25  1680 1784 1960 2240  1050 1053 1059 1089 -hsync +vsync
+Now tell this to xrandr:
+
+xrandr --newmode "1680x1050_60.00"  146.25  1680 1784 1960 2240  1050 1053 1059 1089 -hsync +vsync
 
 exec --no-startup-id  /home/q/scripts/monitor.sh
 
@@ -6,5 +16,5 @@ exec --no-startup-id  /home/q/scripts/monitor.sh
 #!/bin/bash
 xrandr --newmode "2560x1080_68.00"  264.25  2560 2736 3008 3456  1080 1083 1093 1126 -hsync +vsync
 xrandr --addmode DisplayPort-0 2560x1080_68.00
-xrandr --output HDMI-A-0 --primary --mode 1920x1080 --pos 320x0 --rotate normal --output DisplayPort-0 --mode 2560x1080_68.00 --pos 0x1080 --rotate normal
+xrandr --output HDMI-A-0 --mode 1920x1080 --pos 320x0 --rotate normal --output DisplayPort-0 --primary --mode 2560x1080_68.00 --pos 0x1080 --rotate normal
 
