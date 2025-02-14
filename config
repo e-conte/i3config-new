@@ -1,30 +1,77 @@
-### falta poner los ws1 y ws2 cambiados en i3config, la resu correcta y como tenerla con arand q e sla gui de xanrdx
+install xorg-xrandr
 
+### script ###
 
-1st - install xorg-randr
-2nd set a resolution cvt 2580 1080 68 (cvt command gives the Vesa values for the monitor) 
-
-cvt his gives you: 
-                  Modeline "1680x1050_60.00"  146.25  1680 1784 1960 2240  1050 1053 1059 1089 -hsync +vsync
-
-Now tell this to xrandr:
-
-xrandr --newmode "1680x1050_60.00"  146.25  1680 1784 1960 2240  1050 1053 1059 1089 -hsync +vsync
-xrandr --newmode "1680x1050_60.00"  146.25  1680 1784 1960 2240  1050 1053 1059 1089 -hsync +vsync
-
-Then, add the mode to the port:
-
-xrandr --output HDMI-A-0 --mode 1920x1080 --pos 320x0 --rotate normal --output DisplayPort-0 --primary --mode 2560x1080_68.00 --pos 0x1080 --rotate normal
-
-
-exec --no-startup-id  /home/q/scripts/monitor.sh
-
-And now, just asign very mode and direction for the ouputs:
-
-xrandr --output HDMI-A-0 --mode 1920x1080 --pos 320x0 --rotate normal --output DisplayPort-0 --primary --mode 2560x1080_68.00 --pos 0x1080 --rotate normal
-
-###########monitor.sh###########
+[acrab@hostage ~]$ cat scripts/monitor.sh 
 #!/bin/bash
 xrandr --newmode "2560x1080_68.00"  264.25  2560 2736 3008 3456  1080 1083 1093 1126 -hsync +vsync
+xrandr --addmode DisplayPort-0 2560x1080_68.00
+xrandr --output HDMI-A-0 --mode 1920x1080 --pos 320x0 --rotate normal --output DisplayPort-0 --primary --mode 2560x1080_68.00 --pos 0x1080 --rotate normal
+
+
+""config"""
+##################
+set #DP_monitor DisplayPort-0
+set #HDMI_monitor HDMI-A-0
+workspace $ws1 output #DP_monitor
+workspace $ws2 output #HDMI_monitor
+#################
+
+#x#  This script adds a new mode with xandr for my old monitor  #x#
+                                                                  #
+exec --no-startup-id  /home/acrab/scripts/monitor.sh              #
+                                                                  #
+#x#x#x#x#x#x#x#x#x#x#x#x#x#x##x#x#x#x#x#x#x#x#x#x#x#x#x#x#x#x#x#x#x
+
+#x#x#x#x#x#x#x#x#x#x#x#x#  Colors  #x#x#x#x#x#x#x#x#x#x#x#x#x#x#x#x#x#x#x#x
+                                                                          #                                                                       #                                                               >
+# class                 border  bground text    indicator child_border    #
+client.focused          #22B455 #22B455 #FFFFFF #2E9EF4   #22B455         #
+client.focused_inactive #204829 #204829 #FFFFFF #484E50   #5F676A         #
+client.unfocused        #020204 #204829 #888888 #292D2E   #222222         #
+client.urgent           #FF0000 #FF0000 #FFFFFF #FF0000   #FF0000         #
+client.placeholder      #000000 #0C0C0C #FFFFFF #000000   #0C0C0C         #
+                                                                          #
+client.background       #FFFFFF                                           #
+                                                                          #
+bar {                                                                     #
+  colors {                                                                #
+    background #000000                                                    #
+    statusline #FFFFFF                                                    #
+    separator  #666666                                                    #
+                                                                          #
+    focused_workspace  #4C7899 #285577 #FFFFFF                            #
+    active_workspace   #22B455 #222222 #FFFFFF                            #
+    inactive_workspace #020204 #222222 #888888                            #
+    urgent_workspace   #2F343A #FF0000 #FFFFFF                            #
+    binding_mode       #2F343A #FF0000 #FFFFFF                            #
+  }                                                                       #
+}                                                                         #
+                                                                          #
+#x#x#x#x#x#x#x#x#x#x#x#x#x#x#x#x#x#x#x#x#x#x#x#x#x#x#x#x#x#x#x#x#x#x#x#x#x#
+
+
+#x#x#x#x#x#x#x#x#x#x#x#x  D-menu with custom colors  #x#x#x#x#x#x#x#x#x#x#x#x#x#x#x#x#x#x#x#x#x#x#x#x#x#x#x#x#x#x#x#x#x#x#x##x#x#x#x#
+                                                                                                                                    #
+bindsym $mod+d exec "dmenu_run -nf '#BBBBBB' -nb '#80CE87' -sb '#22B455' -sf '#FFFFFF' -fn 'monospace-10' -p 'dmenu prompt &gt;'"   #
+                                                                                                                                    #
+#x#x#x#x#x#x#x#x#x#x#x#x#x#x#x#x#x#x#x#x#x#x#x#x#x#x#x#x#x#x#x#x#x#x#x##x#x#x#x#x#x#x#x#x#x#x#x#x#x#x#x#x#x#x#x#x#x#x#x#x#x#x#x#x#x#x
+
+
+#x#x#x#x#x#xx#x#x#x#  Flatpak Binds  #x#x#x#x#x#x#x#x#x#x#x#x#x#x#x#x#x#x#x
+                                                                          #
+bindsym $mod+Control+b exec flatpak run  com.brave.Browser                #
+bindsym $mod+Control+l exec flatpak run org.libreoffice.LibreOffice       #
+bindsym $mod+Control+c exec flatpak run com.vscodium.codium               #
+bindsym $mod+Control+f exec flatpak run io.gitlab.librewolf-community     #
+bindsym $mod+Control+p exec flatpak run com.playonlinux.PlayOnLinux4      #
+                                                                          #
+#x#x#x#x#x#x#x#x#x#x#x#x#x#x#x#x#x#x#x#x#x#x#x#x#x#x#x#x#x#x#x#x#x#x#x#x#x#
+
+#### i3bar ####
+
+color_good = "#00ff00"
+color_degraded = "#FFFF00"
+color_bad = "#FF0000"
 
 
